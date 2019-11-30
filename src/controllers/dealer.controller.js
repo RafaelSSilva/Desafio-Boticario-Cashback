@@ -10,8 +10,13 @@ module.exports = {
     //     return res.json(products)
     // },
     async create(req, res) {
-        const dealer = await Dealer.create(req.body)
-        return res.json(dealer);
+        try {
+            const dealer = await Dealer.create(req.body)
+            return res.json(dealer);
+        } catch (err) {
+            return res.status(400).send({ error: err })
+        }
+
     },
     // async show(req, res) {
     //     const product = await Product.findById(req.params.id)
