@@ -3,9 +3,6 @@ require('./src/database/index'); // opens database
 const cors = require('cors');
 const requireDir = require('require-dir')
 
-
-
-
 requireDir('./src/models')
 
 const app = express();
@@ -18,8 +15,7 @@ app.listen(port, () => {
     console.log(`Server open on port:${port}`);
 })
 
-// routes
-// const Dealer = require('./src/models/dealer.model');
 
 app.use('/', require('./src/routes/dealer.route'));
 app.use('/authenticate', require('./src/routes/auth.route'));
+app.use('/purchases', require('./src/routes/purchase.route'));
