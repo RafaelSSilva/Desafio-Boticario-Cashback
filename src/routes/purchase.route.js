@@ -7,6 +7,7 @@ routes.use(authMiddleware);
 
 // routes
 routes.post("", PurchaseController.create)
+routes.put("/:id", PurchaseController.update)
 
 
 module.exports = routes
