@@ -43,7 +43,30 @@ module.exports = {
 
             return res.json(purchase);
         } catch (err) {
-            console.log(err)
+            return res.status(400).send({ error: err });
+        }
+    },
+    /**
+     * delete a purchase. 
+     * @param {*} req request. 
+     * @param {*} res request response.
+     * @returns void
+     */
+    async delete(req, res) {
+        try {
+            const userId = req.userId;
+            const purchaseId = req.params.id;
+            const cpf = await getCpf(userId);
+
+            if (!cpf)
+                return res.status(400).send({ error: cpf });
+
+            Purchase.deleteOne({ _id: purchaseId, status: 'Em validação', cpf })
+                .then((data) => {
+                    return data.deletedCount > 0 ? res.json() : res.status(400).send({ error: 'access denied.' });
+                })
+
+        } catch (err) {
             return res.status(400).send({ error: err });
         }
     }
