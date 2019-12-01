@@ -1,5 +1,5 @@
 const express = require('express');
-require('./src/database/index');
+require('./src/database/index'); // opens database
 const cors = require('cors');
 const requireDir = require('require-dir')
 
@@ -21,4 +21,5 @@ app.listen(port, () => {
 // routes
 // const Dealer = require('./src/models/dealer.model');
 
-app.use('/api', require('./src/routes/dealer.route'))
+app.use('/', require('./src/routes/dealer.route'));
+app.use('/authenticate', require('./src/routes/auth.route'));
