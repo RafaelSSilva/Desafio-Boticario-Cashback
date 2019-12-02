@@ -7,7 +7,7 @@ const PurchaseSchema = new Schema({
     date: { type: Date, required: true },
     cpf: { type: String, required: true, max: 100 },
     status: { type: String, required: true },
-    cashback: { type: Number, required: false },
+    credit: { type: Number, required: false },
     percentage: { type: String, required: false }
 });
 

@@ -37,7 +37,13 @@ module.exports = {
      */
     async update(req, res) {
         try {
-            const purchase = await Purchase.findOneAndUpdate({ _id: req.params.id, status: 'Em validação' }, { "code": req.body.code, "total": req.body.total, "date": req.body.date }, { new: true });
+            const userId = req.userId;
+            const cpf = await getCpf(userId);
+
+            if (!cpf)
+                return res.status(400).send({ error: cpf });
+
+            const purchase = await Purchase.findOneAndUpdate({ _id: req.params.id, status: 'Em validação', cpf }, { "code": req.body.code, "total": req.body.total, "date": req.body.date }, { new: true });
 
             if (!purchase)
                 return res.status(400).send({ error: 'invalid status' });
@@ -84,18 +90,16 @@ module.exports = {
             const purchaseId = req.params.id;
             let purchase = await Purchase.findById(purchaseId);
 
-            const cashback = calculateCashback(purchase.total);
-            purchase.cashback = cashback.value;
+            const cashback = calculateCredit(purchase.total);
+            purchase.credit = cashback.value;
             purchase.percentage = cashback.percentage;
-            console.log(cashback)
-            console.log(purchase.cashback)
+
             return res.json(purchase);
         } catch (err) {
             return res.status(400).send({ error: err });
         }
     }
 }
-
 
 /**
  * Get the cpf from the user.
@@ -126,11 +130,11 @@ function getStatus(cpf) {
 }
 
 /**
- * calculates the cashback of the purchase.
+ * calculates the cridit of the purchase.
  * @param {number} total 
  * @returns Object
  */
-function calculateCashback(total) {
+function calculateCredit(total) {
     try {
         if (total <= 999) {
             let p = 10;
@@ -146,3 +150,5 @@ function calculateCashback(total) {
         return { percentage: '0%', value: 0 };
     }
 }
+
+exports.calculateCredit = calculateCredit;

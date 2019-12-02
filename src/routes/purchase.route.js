@@ -12,5 +12,6 @@ routes.delete("/:id", PurchaseController.delete);
 routes.get("/:id", PurchaseController.getPurchase);
 
 
+
 // routes export
 module.exports = routes;
