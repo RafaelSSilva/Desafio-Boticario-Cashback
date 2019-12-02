@@ -6,7 +6,9 @@ const PurchaseSchema = new Schema({
     total: { type: Number, required: true },
     date: { type: Date, required: true },
     cpf: { type: String, required: true, max: 100 },
-    status: { type: String, required: true }
+    status: { type: String, required: true },
+    cashback: { type: Number, required: false },
+    percentage: { type: String, required: false }
 });
 
 // exports the Purcase model.

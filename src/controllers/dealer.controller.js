@@ -3,6 +3,12 @@ const Dealer = mongoose.model('Dealer');
 const jwt = require('../config/jwt');
 
 module.exports = {
+    /**
+     * Create a Dealer. 
+     * @param {*} req req.body object with the fields. 
+     * @param {*} res request response.
+     * @returns Dealer
+     */
     async create(req, res) {
         try {
             const dealer = await Dealer.create(req.body)

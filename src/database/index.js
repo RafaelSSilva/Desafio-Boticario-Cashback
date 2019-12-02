@@ -21,7 +21,7 @@ const options = {
 // opens the database.
 mongoose.connect(uri, options).then(
     () => { /** ready to use. The `mongoose.connect()` promise resolves to mongoose instance. */
-        console.log('database runtime');
+        console.log('open database');
     },
     err => { /** handle initial connection error */
         console.log(err);

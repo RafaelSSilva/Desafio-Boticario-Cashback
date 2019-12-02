@@ -15,7 +15,7 @@ app.listen(port, () => {
     console.log(`Server open on port:${port}`);
 })
 
-
+// define route files.
 app.use('/', require('./src/routes/dealer.route'));
 app.use('/authenticate', require('./src/routes/auth.route'));
 app.use('/purchases', require('./src/routes/purchase.route'));

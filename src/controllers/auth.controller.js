@@ -5,6 +5,14 @@ const jwt = require('../config/jwt');
 
 
 module.exports = {
+    /**
+     * User Authentication. All users are from the Dealer collection.
+     * Generate JWT Token
+     * @param {*} req 
+     * @param {*} res 
+     * 
+     */
+
     async authenticate(req, res) {
         const email = req.body.email;
         const password = req.body.password;

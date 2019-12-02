@@ -23,7 +23,8 @@ module.exports = {
                 })
                 .catch((err) => {
                     return res.status(400).send({ error: err });
-                })
+                });
+
         } catch (err) {
             return res.status(400).send({ error: err });
         }
@@ -64,8 +65,31 @@ module.exports = {
             Purchase.deleteOne({ _id: purchaseId, status: 'Em validação', cpf })
                 .then((data) => {
                     return data.deletedCount > 0 ? res.json() : res.status(400).send({ error: 'access denied.' });
-                })
+                });
 
+        } catch (err) {
+            return res.status(400).send({ error: err });
+        }
+    },
+
+
+    /**
+     * get a purchase. 
+     * @param {*} req request. 
+     * @param {*} res request response.
+     * @returns Purchase
+     */
+    async getPurchase(req, res) {
+        try {
+            const purchaseId = req.params.id;
+            let purchase = await Purchase.findById(purchaseId);
+
+            const cashback = calculateCashback(purchase.total);
+            purchase.cashback = cashback.value;
+            purchase.percentage = cashback.percentage;
+            console.log(cashback)
+            console.log(purchase.cashback)
+            return res.json(purchase);
         } catch (err) {
             return res.status(400).send({ error: err });
         }
@@ -93,10 +117,32 @@ function getCpf(userId) {
 }
 
 /**
- * get the purchase status..
+ * get the purchase status.
  * @param {String} cpf user cpf.
  * @returns String
  */
 function getStatus(cpf) {
     return cpf === '153.509.460-56' ? 'Aprovado' : 'Em validação';
+}
+
+/**
+ * calculates the cashback of the purchase.
+ * @param {number} total 
+ * @returns Object
+ */
+function calculateCashback(total) {
+    try {
+        if (total <= 999) {
+            let p = 10;
+            return { percentage: `${p}%`, value: total * (p / 100) };
+        } else if (total >= 1000 && total <= 1500) {
+            let p = 15;
+            return { percentage: `${p}%`, value: total * (p / 100) };
+        } else {
+            let p = 20;
+            return { percentage: `${p}%`, value: total * (p / 100) };
+        }
+    } catch (e) {
+        return { percentage: '0%', value: 0 };
+    }
 }

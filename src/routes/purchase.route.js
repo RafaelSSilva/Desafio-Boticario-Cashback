@@ -9,6 +9,8 @@ routes.use(authMiddleware);
 routes.post("", PurchaseController.create);
 routes.put("/:id", PurchaseController.update);
 routes.delete("/:id", PurchaseController.delete);
+routes.get("/:id", PurchaseController.getPurchase);
+
 
 // routes export
 module.exports = routes;
